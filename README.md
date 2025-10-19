@@ -30,6 +30,7 @@ See the full diagrams in the `/docs` or in the academic paper for:
 ---
 
 ## 🚀 Quickstart
+🔗 [PAPER](https://github.com/stevejhorton/PNM/blob/main/docs/tex/hardened_pnm.pdf)
 🔗 [DEMO HOW-TO](https://github.com/stevejhorton/PNM/blob/main/docs/README_demo.md)
 
 ```bash
