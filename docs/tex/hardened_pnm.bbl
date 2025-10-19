@@ -1,0 +1,41 @@
+\begin{thebibliography}{1}
+
+\bibitem{adi2023-watermark-hard}
+Yossi Adi et~al.
+\newblock On the difficulty of watermarking neural networks, 2023.
+\newblock CCS. (Fill in exact metadata.).
+
+\bibitem{carlini2024-foundation-prov}
+Nicholas Carlini et~al.
+\newblock Poisoning and extraction attacks on foundation models, 2024.
+\newblock USENIX paper. (Fill in exact venue/URL.).
+
+\bibitem{meiklejohn2025-ml-supply}
+Sarah Meiklejohn et~al.
+\newblock Machine learning models have a supply chain problem, 2025.
+\newblock arXiv preprint. (Fill in exact arXiv ID.).
+
+\bibitem{mitre-atlas-2024}
+{MITRE Corporation}.
+\newblock Mitre atlas: Adversarial threat landscape for artificial-intelligence
+  systems, 2024.
+\newblock URL: \url{https://atlas.mitre.org/}.
+
+\bibitem{nist-ai-rmf-2023}
+{NIST}.
+\newblock Artificial intelligence risk management framework (ai rmf) 1.0, 2023.
+\newblock NIST AI RMF 1.0. URL: \url{https://www.nist.gov/}.
+
+\bibitem{owasp-ml06-2023}
+{OWASP Foundation}.
+\newblock Owasp machine learning security top 10: Ml06—ai supply chain
+  attacks, 2023.
+\newblock URL: \url{https://owasp.org/}.
+
+\bibitem{unit42-2025-namespace-reuse}
+{Palo Alto Networks Unit 42}.
+\newblock Model namespace reuse: An ai supply-chain attack exploiting model
+  name trust, 2025.
+\newblock Industry report. URL: \url{https://unit42.paloaltonetworks.com/}.
+
+\end{thebibliography}

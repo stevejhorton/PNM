@@ -1,0 +1,52 @@
+\relax 
+\providecommand\hyper@newdestlabel[2]{}
+\providecommand\HyField@AuxAddToFields[1]{}
+\providecommand\HyField@AuxAddToCoFields[2]{}
+\citation{adi2023-watermark-hard}
+\@writefile{toc}{\contentsline {section}{\numberline {1}Introduction}{1}{section.1}\protected@file@percent }
+\citation{owasp-ml06-2023}
+\citation{mitre-atlas-2024}
+\citation{nist-ai-rmf-2023}
+\citation{carlini2024-foundation-prov}
+\citation{meiklejohn2025-ml-supply}
+\citation{unit42-2025-namespace-reuse}
+\@writefile{toc}{\contentsline {section}{\numberline {2}Related Work and Risk Landscape}{2}{section.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {3}Threat Model}{2}{section.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {4}Hardened PNM Architecture}{2}{section.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.1}Parity nodes (transparent tags)}{2}{subsection.4.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.2}Overlap placement: targeting leverage while preserving randomness}{2}{subsection.4.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.3}HMAC-anchored master verification}{2}{subsection.4.3}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.4}Fixed dual-master fast check}{3}{subsection.4.4}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.5}Behavioral canary probes}{3}{subsection.4.5}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {4.6}Serialization and publication}{3}{subsection.4.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {5}Detection Probability and Overhead}{3}{section.5}\protected@file@percent }
+\newlabel{eq:detect-prob}{{2}{3}{Detection Probability and Overhead}{equation.2}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {6}Evaluation}{3}{section.6}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.1}Setup}{3}{subsection.6.1}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.2}Attacks}{4}{subsection.6.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {subsection}{\numberline {6.3}Results}{4}{subsection.6.3}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {1}{\ignorespaces Detection summary across attack types.}}{4}{table.1}\protected@file@percent }
+\@writefile{lot}{\contentsline {table}{\numberline {2}{\ignorespaces Overhead and timing.}}{4}{table.2}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {7}Security Analysis and Residual Risks}{4}{section.7}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {8}Deployment Guidance}{4}{section.8}\protected@file@percent }
+\@writefile{toc}{\contentsline {section}{\numberline {9}Limitations and Future Work}{5}{section.9}\protected@file@percent }
+\@writefile{lof}{\contentsline {figure}{\numberline {1}{\ignorespaces Hierarchical integrity flow with neurons at the bottom (intact model). Example values illustrate PN sums; masters store HMACs over their PN sets; the root is an HMAC over masters.}}{5}{figure.1}\protected@file@percent }
+\newlabel{fig:intact_pyramid}{{1}{5}{Hierarchical integrity flow with neurons at the bottom (intact model). Example values illustrate PN sums; masters store HMACs over their PN sets; the root is an HMAC over masters}{figure.1}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {2}{\ignorespaces Tamper propagation with neurons at the bottom. A small weight change in $n_1$ shifts PN$_1$'s sum, which flips M$_{\mathrm  {core}}$'s HMAC; the root digest then mismatches. Red highlights show the bubble-up path.}}{5}{figure.2}\protected@file@percent }
+\newlabel{fig:tampered_pyramid}{{2}{5}{Tamper propagation with neurons at the bottom. A small weight change in $n_1$ shifts PN$_1$'s sum, which flips M$_{\mathrm {core}}$'s HMAC; the root digest then mismatches. Red highlights show the bubble-up path}{figure.2}{}}
+\@writefile{lof}{\contentsline {figure}{\numberline {3}{\ignorespaces Horizontal verification pipeline: neuron groups $\rightarrow $ parity nodes $\rightarrow $ fixed masters (core/edge) $\rightarrow $ root digest $\rightarrow $ Verify(). Fast checks read the two fixed masters each inference; full checks verify all masters periodically.}}{6}{figure.3}\protected@file@percent }
+\newlabel{fig:pipeline}{{3}{6}{Horizontal verification pipeline: neuron groups $\rightarrow $ parity nodes $\rightarrow $ fixed masters (core/edge) $\rightarrow $ root digest $\rightarrow $ Verify(). Fast checks read the two fixed masters each inference; full checks verify all masters periodically}{figure.3}{}}
+\@writefile{toc}{\contentsline {section}{\numberline {10}Conclusion}{6}{section.10}\protected@file@percent }
+\@writefile{toc}{\contentsline {paragraph}{Availability}{6}{section*.3}\protected@file@percent }
+\bibstyle{plain}
+\bibdata{references}
+\bibcite{adi2023-watermark-hard}{1}
+\bibcite{carlini2024-foundation-prov}{2}
+\bibcite{meiklejohn2025-ml-supply}{3}
+\bibcite{mitre-atlas-2024}{4}
+\bibcite{nist-ai-rmf-2023}{5}
+\bibcite{owasp-ml06-2023}{6}
+\bibcite{unit42-2025-namespace-reuse}{7}
+\@writefile{toc}{\contentsline {section}{\numberline {A}Appendix: Verifier Sketch}{7}{appendix.A}\protected@file@percent }
+\@writefile{loa}{\contentsline {algorithm}{\numberline {1}{\ignorespaces Fixed dual-stage verification with canaries}}{7}{algorithm.1}\protected@file@percent }
+\gdef \@abspage@last{7}
