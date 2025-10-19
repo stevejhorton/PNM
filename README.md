@@ -1,44 +1,87 @@
-# Hardened Parity Network Maps (HPNM) — Reference Demo
+# Hardened Parity Network Maps (PNM)
+[![Python](https://img.shields.io/badge/python-3.10%2B-blue)](https://www.python.org/)
+[![License](https://img.shields.io/badge/license-MIT-green)](LICENSE)
 
-This repo contains a minimal, runnable reference implementation of **Hardened Parity Network Maps** with:
-- **HMAC-anchored masters** (no linear-sum exploits)
-- **Fixed dual-master fast check** (core/output anchored + top-activation anchored)
-- **Overlap placement** (targeted + randomized parity nodes)
-- **Behavioral canaries** (semantic verification)
-- **Demo MLP + attack scripts**
-
-> This is a small demo intended for reproducibility and easy experimentation. It is **not** production code.
+**Hardened Parity Network Maps (PNM)** provide a verifiable, post-training mechanism for ensuring that AI models remain unmodified and trustworthy at rest and during runtime.  
+PNM establishes a **cryptographically anchored chain of trust** across a model’s neurons, parity nodes, master nodes, and behavioral canaries—detecting even subtle tampering with negligible performance overhead.
 
 ---
 
-## Quickstart
+## 🔍 Key Features
+- **HMAC-Anchored Masters:** Prevent sum-conservation exploits through keyed cryptographic digests.  
+- **Fixed Dual-Master Fast Check:** Deterministic core and edge masters verified each inference (sub-millisecond).  
+- **Overlap Placement:** Focus coverage on top activations and outputs with randomized overlap for tamper resilience.  
+- **Behavioral Canaries:** Detect semantic drift or unmonitored parameter edits.  
+- **Chain-of-Trust Serialization:** Deterministic map hashing enables public verification of model integrity.  
+
+---
+
+## 🧩 Architecture
+PNM layers sit *on top* of trained weights:
+```
+Neurons → Parity Nodes (PN) → Master Nodes (MN) → Root Digest → Verify()
+```
+A fixed dual-master fast check validates `M_core` and `M_edge` on every inference, while full verification recomputes all masters and the root HMAC periodically.
+
+See the full diagrams in the `/docs` or in the academic paper for:  
+- **Hierarchical Integrity Flow (Intact & Tampered)**  
+- **Horizontal Verification Pipeline**
+
+---
+
+## 🚀 Quickstart
+🔗 [DEMO HOW-TO](https://github.com/stevejhorton/PNM/blob/main/docs/README_demo.md)
 
 ```bash
-python -m venv .venv && source .venv/bin/activate      # Windows: .venv\Scripts\activate
+git clone https://github.com/stevejhorton/PNM.git
+cd PNM
+python -m venv .venv && source .venv/bin/activate
 pip install -r requirements.txt
 
-# 1) Train and lock
-python scripts/train_and_lock.py --seed 0 --density 0.5 --num-parity 100 --num-masters 8
+# Train & lock demo model
+python scripts/train_and_lock.py --seed 0 --density 0.5 --num-parity 100
 
-# 2) Verify (fast + full) and run attacks
+# Verify integrity
 python scripts/verify_and_attack.py --attack none
+
+# Try simulated tampering
 python scripts/verify_and_attack.py --attack at_rest --m 20
-python scripts/verify_and_attack.py --attack runtime --m 20
-python scripts/verify_and_attack.py --attack low_rank --scale 0.01
-python scripts/verify_and_attack.py --attack random_small --m 100
-python scripts/verify_and_attack.py --attack unmonitored_bulk --m 50
+```
+Artifacts are stored under `.artifacts/` and include the model, parity map, root digest, and canaries.
+
+---
+
+## ⚙️ How It Works
+1. **Parity nodes** summarize small neuron groups via checksums.  
+2. **Masters** compute HMACs over assigned parity values.  
+3. **Root digest** chains master HMACs for full-model validation.  
+4. **Fixed dual-master fast check** reads two masters each inference for sub-ms assurance.  
+5. **Behavioral canaries** confirm semantic integrity even for unmonitored parameters.
+
+---
+
+## 📖 Citation
+If you reference or extend this work, please cite:
+
+```bibtex
+@misc{horton2025pnm,
+  title  = {Hardened Parity Network Maps: HMAC-Anchored Chain-of-Trust for Verifiable AI Integrity and Semantic Consistency},
+  author = {Horton, Steve J.},
+  year   = {2025},
+  note   = {arXiv preprint arXiv:xxxx.xxxxx}
+}
 ```
 
-Artifacts are stored under `.artifacts/`:
-- `model.pt` — trained demo MLP
-- `hp_parity_map.json` — locked node parities, master HMACs, root digest
-- `public_hash.txt` — published hash of the serialized map
-- `canaries.json` — canary inputs and expected outputs
+---
 
-## Design (demo)
+## 🧑‍💼 About the Author
+**Steve J. Horton** is an information security professional with over three decades of experience in mission-critical communications and assurance.  
+Beginning his career in the U.S. Air Force as a **3C2X1 Tech Controller**, he later spent **23 years at the Naval Research Laboratory’s Center for High Assurance Computing**, specializing in secure infrastructure and verification systems.  
+He now serves as **VPN Service Level Owner for Optum/UHG**, a Fortune 4 enterprise.  
+Steve holds an MS in Information Security and leads independent research on verifiable AI integrity and trust architectures.  
 
-- **Parity Nodes (PN):** each summarizes a small set of weights (fan-in 2–10). We use deterministic *sums* in the demo for clarity.
-- **Masters (MN):** each stores an HMAC over the `(id || parity)` tuples of its PNs.
-- **Root:** HMAC over master digests.
-- **Fixed dual-master fast check:** two masters are deterministically assigned to (a) all output-layer PNs and (b) top-activation regions.
-- **Canaries:** fixed inputs with expected outputs (tolerance) checked each run.
+🔗 [LinkedIn](https://www.linkedin.com/in/steve-horton-8312199)
+
+---
+
+© 2025 Steve J. Horton — Released under the MIT License.
