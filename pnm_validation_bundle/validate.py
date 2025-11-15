@@ -11,16 +11,19 @@ from pnm_core import ParityNode, MasterNode
 from attacks import random_flip, rank1, adaptive
 
 # ---------- core helpers ----------
-def inject_pnm(model, density=0.005, fan_in=4, key=None):
+def inject_pnm(model, density=0.005, fan_in=4, key=None, max_nodes=5000):
     if key is None:
         key = torch.rand(32).numpy().tobytes()
     all_p = [p for p in model.parameters() if p.requires_grad]
     n_weights = sum(p.numel() for p in all_p)
-    n_nodes = int(n_weights * density)
+    n_full = int(n_weights * density)
+    n_nodes = min(n_full, max_nodes)          # clamp for memory safety
+    print(f'Building {n_nodes} parity nodes (density cap {max_nodes})...')
     pnodes = []
-    for i in tqdm(range(n_nodes), desc='parity nodes', unit_scale=True, unit=' nd'):
+    for i in tqdm(range(n_nodes), desc='parity nodes', unit=' nd'):
         tensor = all_p[torch.randint(len(all_p), (1,)).item()]
         pnodes.append(ParityNode(f'pn{i}', [tensor], fan_in))
+    # same master logic as before
     out_p = [model.head.weight, model.head.bias] if hasattr(model, 'head') else []
     m_core = MasterNode('m_core', [pn for pn in pnodes if any(t in out_p for t in pn.vals)], key)
     m_edge = MasterNode('m_edge', pnodes[::2], key)
@@ -47,10 +50,10 @@ def main():
     # build model
     if args.model == 'transformer':
         model = Transformer(layers=args.layers, nhead=args.heads).to(device)
-        density = 0.005
+        pdict, masters, key = inject_pnm(model, density=0.005, max_nodes=5000)
     else:
         model = MLP().to(device)
-        density = 0.01          # higher density for tiny net
+        pdict, masters, key = inject_pnm(model, density=0.01)
     # PNM overlay
     pdict, masters, key = inject_pnm(model, density=density)
     # canary set
