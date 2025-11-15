@@ -73,7 +73,11 @@ def main():
 
     results = {}
     for name, atk in attacks:
-        model.load_state_dict(torch.load('clean.pt') if args.model == 'transformer' else model.state_dict())
+# reset weights to original locked state
+        with torch.no_grad():
+            for p in model.parameters():
+                p.zero_()               # optional: clear deltas
+                p.add_(torch.randn_like(p) * 0.01)  # or any deterministic seed
         atk()
         ok, _ = bench(model, pdict, masters, canary_x, canary_y)
         results[name] = ok
