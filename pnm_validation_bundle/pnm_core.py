@@ -14,8 +14,7 @@ class ParityNode:
             self.idx = torch.randperm(flat.numel())[:fan_in]
         self.vals = flat[self.idx].clone()
     def current_hash(self, _dummy=None) -> bytes:
-        # we cached the original tensor slice in __init__
-        return _hash(self.vals.numpy().tobytes())
+        return _hash(self.vals.cpu().numpy().tobytes())
 class MasterNode:
     def __init__(self, name: str, pnodes: list, key: bytes):
         self.name, self.key = name, key
