@@ -14,7 +14,7 @@ from attacks import random_flip, rank1, adaptive
 def inject_pnm(model, density=0.005, fan_in=4, key=None, max_nodes=5000):
     if key is None:
         key = torch.rand(32).numpy().tobytes()
-    all_p = [p for p in model.parameters() if p.requires_grad]
+    all_p = [p for p in model.parameters() if p.requires_grad and p.numel() > 0]
     n_weights = sum(p.numel() for p in all_p)
     n_nodes = min(int(n_weights * density), max_nodes)
     print(f'Building {n_nodes} parity nodes (density cap {max_nodes})...')
@@ -23,8 +23,7 @@ def inject_pnm(model, density=0.005, fan_in=4, key=None, max_nodes=5000):
         tensor = all_p[torch.randint(len(all_p), (1,)).item()]
         pnodes.append(ParityNode(f'pn{i}', [tensor], fan_in))
 
-    out_p = [model.head.weight, model.head.bias] if hasattr(model, 'head') else []
-    out_ids = {id(p) for p in out_p}
+    out_ids = {id(p) for p in ([model.head.weight, model.head.bias] if hasattr(model, 'head') else [])}
     m_core = MasterNode('m_core', [pn for pn in pnodes if any(id(t) in out_ids for t in pn.vals)], key)
     m_edge = MasterNode('m_edge', pnodes[::2], key)
     masters = [m_core, m_edge] + [MasterNode(f'm{i}', pnodes[i::30], key) for i in range(30)]
