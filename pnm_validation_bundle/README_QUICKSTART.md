@@ -8,7 +8,7 @@
 
 3. See timings  
    python validate.py --bench
-
+```
 Tree:
 pnm_validation_bundle/
 ├── README_QUICKSTART.md      # 3 commands to rerun everything
@@ -19,4 +19,4 @@ pnm_validation_bundle/
 ├── notebooks/
 │   └── reproduce_results.ipynb   # Jupyter version if preferred
 └── checksums.sha256          # sha256 of clean weights used in bench
-
+```
