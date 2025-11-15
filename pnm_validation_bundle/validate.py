@@ -16,16 +16,16 @@ def inject_pnm(model, density=0.005, fan_in=4, key=None, max_nodes=5000):
         key = torch.rand(32).numpy().tobytes()
     all_p = [p for p in model.parameters() if p.requires_grad]
     n_weights = sum(p.numel() for p in all_p)
-    n_full = int(n_weights * density)
-    n_nodes = min(n_full, max_nodes)          # clamp for memory safety
+    n_nodes = min(int(n_weights * density), max_nodes)
     print(f'Building {n_nodes} parity nodes (density cap {max_nodes})...')
     pnodes = []
     for i in tqdm(range(n_nodes), desc='parity nodes', unit=' nd'):
         tensor = all_p[torch.randint(len(all_p), (1,)).item()]
         pnodes.append(ParityNode(f'pn{i}', [tensor], fan_in))
-    # same master logic as before
+
     out_p = [model.head.weight, model.head.bias] if hasattr(model, 'head') else []
-    m_core = MasterNode('m_core', [pn for pn in pnodes if any(t in out_p for t in pn.vals)], key)
+    out_ids = {id(p) for p in out_p}
+    m_core = MasterNode('m_core', [pn for pn in pnodes if any(id(t) in out_ids for t in pn.vals)], key)
     m_edge = MasterNode('m_edge', pnodes[::2], key)
     masters = [m_core, m_edge] + [MasterNode(f'm{i}', pnodes[i::30], key) for i in range(30)]
     pdict = {pn.name: pn for pn in pnodes}
