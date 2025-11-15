@@ -4,13 +4,15 @@ def _hash(x: bytes) -> bytes:
     return hashlib.sha256(x).digest()
 
 class ParityNode:
-    """Passive tag over a weight tensor slice."""
+    class ParityNode:
     def __init__(self, name: str, tensors: list, fan_in: int = 4):
         self.name = name
         flat = torch.cat([w.detach().flatten() for w in tensors])
-        self.idx = torch.randperm(len(flat))[:fan_in]
+        if flat.numel() < fan_in:                       # tiny tensor → use whole thing
+            self.idx = torch.arange(flat.numel())
+        else:
+            self.idx = torch.randperm(flat.numel())[:fan_in]
         self.vals = flat[self.idx].clone()
-
     def current_hash(self, tensors: list) -> bytes:
         flat = torch.cat([w.detach().flatten() for w in tensors])
         return _hash(flat[self.idx].numpy().tobytes())
