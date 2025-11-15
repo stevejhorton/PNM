@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-PNM validation – tiny-MLP by default, big transformer optional
-python validate.py                          # 111-param MLP
+PNM validation – tiny MLP by default, big transformer optional
+python validate.py                              # 111-param MLP
 python validate.py --model transformer --layers 6 --heads 8 --attack all
 """
 import argparse, json, time, torch, sys
@@ -49,10 +49,10 @@ def main():
     # build model
     if args.model == 'transformer':
         model = Transformer(layers=args.layers, nhead=args.heads).to(device)
-        pdict, masters, key = inject_pnm(model, density=0.005, max_nodes=5000)
+        density = 0.005
     else:
         model = MLP().to(device)
-        pdict, masters, key = inject_pnm(model, density=0.01)
+        density = 0.01
     # PNM overlay
     pdict, masters, key = inject_pnm(model, density=density)
     # canary set
@@ -73,8 +73,7 @@ def main():
 
     results = {}
     for name, atk in attacks:
-        # restore clean weights
-        model.load_state_dict(model.state_dict())
+        model.load_state_dict(torch.load('clean.pt') if args.model == 'transformer' else model.state_dict())
         atk()
         ok, _ = bench(model, pdict, masters, canary_x, canary_y)
         results[name] = ok
