@@ -31,7 +31,7 @@ See the full diagrams in the `/docs` or in the academic paper for:
 
 ## 🚀 Quickstart
 🔗 [PAPER](https://github.com/stevejhorton/PNM/blob/main/docs/tex/hardened_pnm.pdf)
-🔗 [DEMO HOW-TO](https://github.com/stevejhorton/PNM/blob/main/docs/README_demo.md)
+🔗 [EASY_PNM_VALIDATION_BUNDLE](https://github.com/stevejhorton/PNM/blob/main/pnm_validation_bundle/README_QUICKSTART.md) | [Original DEMO-HOW-TO](https://github.com/stevejhorton/PNM/blob/main/docs/README_demo.md)
 
 ```bash
 git clone https://github.com/stevejhorton/PNM.git
@@ -69,10 +69,55 @@ If you reference or extend this work, please cite:
   title  = {Hardened Parity Network Maps: HMAC-Anchored Chain-of-Trust for Verifiable AI Integrity and Semantic Consistency},
   author = {Horton, Steve J.},
   year   = {2025},
-  note   = {arXiv preprint arXiv:xxxx.xxxxx}
+  note   = {arXiv preprint}
 }
 ```
+```
+.
+├── docs
+│   ├── hardened_pnm_whitepaper.md
+│   ├── README_demo.md
+│   └── tex
+│       ├── build.sh
+│       ├── go.sh
+│       ├── hardened_pnm.aux
+│       ├── hardened_pnm.bbl
+│       ├── hardened_pnm.blg
+│       ├── hardened_pnm.log
+│       ├── hardened_pnm.out
+│       ├── hardened_pnm.pdf
+│       ├── hardened_pnm.tex
+│       ├── pnm_pipeline.png
+│       ├── pnm_pipeline.svg
+│       └── references.bib
+├── hpnm_demo.zip
+├── LICENSE
+├── pnm
+│   ├── __init__.py
+│   ├── canaries.py
+│   ├── hardened_pnm.py
+│   ├── model.py
+│   └── util.py
+├── pnm_validation_bundle
+│   ├── attacks.py
+│   ├── checksums.sha256
+│   ├── models.py
+│   ├── notebooks
+│   │   └── reproduce_results.ipynb
+│   ├── pnm_core.py
+│   ├── README_QUICKSTART.md
+│   └── validate.py
+├── README.md
+├── requirements.txt
+├── scripts
+│   ├── train_and_lock.py
+│   └── verify_and_attack.py
+└── tests
+    └── test_pnm_basic.py
 
+8 directories, 33 files
+
+```
 ---
 
 ## 🧑‍💼 About the Author
